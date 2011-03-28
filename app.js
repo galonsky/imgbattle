@@ -46,7 +46,21 @@ app.get('/', function(req, httpResponse) {
 });
 
 app.get('/vote/:win/:lose', function(req, httpResponse) {
-    
+    var win = req.params.win;
+    var lose = req.params.lose;
+    data.get(win, function(err, res) {
+        var wins = res.wins;
+        data.updateWins(win, wins + 1, function(err2, res2) {
+            
+        });
+    });
+    data.get(lose, function(err, res) {
+        var losses = res.losses;
+        data.updateLosses(lose, losses + 1, function(err2, res2) {
+            
+        });
+    });
+    httpResponse.redirect('/');
 });
 
 app.get('/files/:id', function(req, httpResponse) {
