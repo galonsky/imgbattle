@@ -1,5 +1,4 @@
 function pairRandom(arr){
-    console.log(arr.length);
     var first = Math.floor(Math.random() * (arr.length));
     var second = -1;
     var ret = [];
@@ -37,7 +36,10 @@ function elo(winner, loser){
 
 var express = require('express');
 var http = require('http');
-
+var sys = require('sys');
+var formidable = require('formidable');
+var fs = require('fs');
+var rest = require('restler');
 
 var app = express.createServer();
 
@@ -53,7 +55,30 @@ app.set('view engine', 'jade');
 
 
 
-
+app.post('/upload', function(req, httpResponse) {
+    var form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, files) {
+        var filename = files.upload.name;
+        data.createDoc(filename, function(err2, res) {
+            var id = res.id;
+            var rev = res.rev;
+            fs.readFile(files.upload.path, 'binary', function(err3, data) {
+                rest.put('http://couchdb.ubuntu/pictures/' + id + '/' + filename + '?rev=' + rev, {
+                    data: data,
+                    encoding: 'binary',
+                    headers: {
+                        'Content-Type': files.upload.type,
+                        'Content-Length': files.upload.size
+                    }
+                }).on('success', function() {
+                    httpResponse.redirect('/');
+                });
+            });
+        });
+        //create document
+        //add attachment
+    });
+});
 
 app.get('/', function(req, httpResponse) {
     data.all(function(err, res) {

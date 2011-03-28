@@ -23,3 +23,10 @@ module.exports.get = function(id, callback) {
 module.exports.updateRating = function(id, rating, callback) {
     db.merge(id, {rating : rating}, callback);
 };
+
+module.exports.createDoc = function(filename, callback) {
+    db.save({
+        filename: filename,
+        rating: 1500
+    }, callback);
+};
