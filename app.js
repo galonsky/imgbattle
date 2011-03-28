@@ -5,8 +5,14 @@ function pairRandom(arr){
     do {
         second = Math.floor(Math.random() * (arr.length));
     } while(first == second);
-    ret.push('/files/'+ arr[first].value._id);
-    ret.push('/files/'+ arr[second].value._id);
+    ret.push({
+        id : arr[first].value._id,
+        url : '/files/'+ arr[first].value._id,
+        otherid : arr[second].value._id});
+    ret.push({
+        id : arr[second].value._id,
+        url : '/files/'+ arr[second].value._id,
+        otherid: arr[first].value._id});
     return ret;
 }
 
@@ -37,6 +43,10 @@ app.get('/', function(req, httpResponse) {
             locals : {images : pair}
         });
     });
+});
+
+app.get('/vote/:win/:lose', function(req, httpResponse) {
+    
 });
 
 app.get('/files/:id', function(req, httpResponse) {
