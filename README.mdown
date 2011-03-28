@@ -1,0 +1,12 @@
+An image voting and ranking app that supports uploads.
+
+Requires:
+
+*	Cradle
+*	Express
+*	Formidable
+*	Restler
+
+Todo:
+
+*	Rankings Page
