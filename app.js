@@ -1,4 +1,5 @@
 function pairRandom(arr){
+    console.log(arr.length);
     var first = Math.floor(Math.random() * (arr.length));
     var second = -1;
     var ret = [];
@@ -14,6 +15,24 @@ function pairRandom(arr){
         url : '/files/'+ arr[second].value._id,
         otherid: arr[first].value._id});
     return ret;
+}
+var data = require('./data');
+
+function elo(winner, loser){
+    var current1 = winner.doc.rating;
+    var current2 = loser.doc.rating;
+    var E = 0;
+    var score1 = 20;
+    var score2 = 10;
+    
+    E = 120 - Math.round(1 / (1 + Math.pow(10, ((current2 - current1) / 400))) * 120);
+    
+    data.updateRating(winner.id, current1 + E, function(err, res) {
+        
+    });
+    data.updateRating(loser.id, current2 - E, function(err, res){
+        
+    });
 }
 
 var express = require('express');
@@ -32,7 +51,7 @@ app.configure(function() {
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
-var data = require('./data');
+
 
 
 
@@ -48,17 +67,9 @@ app.get('/', function(req, httpResponse) {
 app.get('/vote/:win/:lose', function(req, httpResponse) {
     var win = req.params.win;
     var lose = req.params.lose;
-    data.get(win, function(err, res) {
-        var wins = res.wins;
-        data.updateWins(win, wins + 1, function(err2, res2) {
-            
-        });
-    });
-    data.get(lose, function(err, res) {
-        var losses = res.losses;
-        data.updateLosses(lose, losses + 1, function(err2, res2) {
-            
-        });
+    data.get([win, lose], function(err, res) {
+        console.log(res);
+        elo(res[0], res[1]);
     });
     httpResponse.redirect('/');
 });
@@ -81,7 +92,7 @@ app.get('/files/:id', function(req, httpResponse) {
             });
             res.on('end', function() {
                 var buf = new Buffer(image, 'binary');
-                httpResponse.contentType('image/jpeg');
+                httpResponse.contentType(filename);
                 httpResponse.send(buf, 200);
             });
         });
