@@ -12,4 +12,6 @@ app.configure(function() {
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
+var data = require('./data');
+
 app.listen(4000);
