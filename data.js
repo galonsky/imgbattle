@@ -11,3 +11,11 @@ db.save('_design/pictures', {
         }
     }
 });
+
+module.exports.all = function(callback) {
+    db.view('pictures/all', callback);
+};
+
+module.exports.get = function(id, callback) {
+    db.get(id, callback);
+}
