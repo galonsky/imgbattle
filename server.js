@@ -63,7 +63,7 @@ app.post('/upload', function(req, httpResponse) {
             var id = res.id;
             var rev = res.rev;
             fs.readFile(files.upload.path, 'binary', function(err3, data) {
-                rest.put('http://couchdb.ubuntu/pictures/' + id + '/' + filename + '?rev=' + rev, {
+                rest.put('http://localhost:5984/pictures/' + id + '/' + filename + '?rev=' + rev, {
                     data: data,
                     encoding: 'binary',
                     headers: {
