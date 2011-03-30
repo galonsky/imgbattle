@@ -9,6 +9,12 @@ db.save('_design/pictures', {
             if(doc.filename)
                 emit(doc.filename, doc);
         }
+    },
+    sorted: {
+        map: function(doc) {
+            if(doc.filename)
+                emit(doc.rating, doc);
+        }
     }
 });
 
