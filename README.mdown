@@ -10,4 +10,4 @@ Requires:
 
 Todo:
 
-*	Rankings Page
+*	Make getting two random images more efficient
