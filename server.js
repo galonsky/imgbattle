@@ -53,7 +53,14 @@ app.configure(function() {
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
-
+app.get('/ranking', function(req, httpResponse) {
+    rest.get('http://localhost:5984/pictures/_design/pictures/_view/sorted?limit=10&descending=true').on('complete', function(data) {
+        var obj = eval('(' + data + ')');
+        httpResponse.render('ranking', {
+            locals: {images : obj.rows}
+        });
+    });
+});
 
 app.post('/upload', function(req, httpResponse) {
     var form = new formidable.IncomingForm();
