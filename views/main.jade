@@ -1,4 +1,6 @@
 h1 Pictures!
+a(href='/ranking')
+  | Rankings
 #images!= partial('image', {collection: images})
 p
   form(action='/upload', method='post', enctype='multipart/form-data')
